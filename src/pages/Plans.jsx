@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import '../style.css';
 
-import { planProtocol, readProtocols, createProtocol, readPlans, setActionState } from '../services/api';
+import { planProtocol, readProtocols, createProtocol, readPlans, setActionState, readResources } from '../services/api';
 import AccountListing from '../components/AccountListing';
 import ProtocolNode from '../components/ProtocolNode';
 import ProtocolStepNode from '../components/ProtocolStepNode';
@@ -19,6 +19,11 @@ function Plans() {
   const [action, setAction] = useState(null);
   const [editing, setEditing] = useState(false);
 
+  const [resources, setResources] = useState([]); 
+
+  const [party, setParty] = useState("");
+  const [location, setLocation] = useState("");
+
   const [implementing, setimplementing] = useState(true);
   const [completing, setcompleting] = useState(true);
   const [suspending, setsuspending] = useState(true);
@@ -30,12 +35,15 @@ function Plans() {
       try {
         const response = await readPlans();
 
+        const resourceResponse = await readResources();
+
         const status = response.status;
         const statusText = response.statusText;
         console.log(`${status}: ${statusText}`);
 
         const objects = response.data;
         setData(objects);
+        setResources(resourceResponse.data);
         setLoading(false);
         console.log(objects);
       } 
@@ -209,12 +217,16 @@ function Plans() {
                 <button disabled={!abandoning} onClick={abandon}>Abandon</button><br/>
               </div>
             </details>
+            <button onClick={(e) => setEditing(true)}>Edit</button>
           </div> 
           : 
           <div>
             <p>Name: {action.name}</p>
-            <p>Party: {action.party ? action.party : "None"}</p>
-            <p>Location: {action.party ? action.party : "None"}</p>
+            <label>Party: </label>
+            <input onChange={(e) => setParty(e.target.value)}></input>
+
+            <label>Location: </label>
+            <input onChange={(e) => setLocation(e.target.value)}></input>
           </div> 
           }
         </div> 
