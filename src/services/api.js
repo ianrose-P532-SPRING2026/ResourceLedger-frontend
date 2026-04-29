@@ -2,10 +2,46 @@ import axios from "axios";
 
 
 export const host = axios.create({
-  //baseURL: "http://localhost:8080",
-  baseURL: "https://ianroseresourceledgerweek1.onrender.com",
-  timeout: 5000,
+  baseURL: "http://localhost:8080/api",
+  //baseURL: "https://ianroseresourceledgerweek1.onrender.com",
+  timeout: 30000,
 });
+
+
+
+export async function createResource(name, kind, unit) {
+  const request = {name: name, kind: kind, unit: unit};
+  const response = await host.post(`/resource-types`, request);
+  return response;
+}
+
+export async function readResources() {
+    const response = await host.get(`/resource-types`);
+    return response;
+}
+
+
+
+export async function readAccounts() {
+  const response = await host.get(`/accounts`);
+  return response;
+}
+
+
+export async function readProtocols() {
+  const response = await host.get(`/protocols`);
+  return response;
+}
+
+export async function createProtocol(name, description, steps) {
+  const request = {name: name, description: description, steps: steps};
+  console.log(request);
+  const response = await host.post(`/protocols`, request);
+  return response;
+}
+
+
+
 
 export async function createTest(name) {
   const request = {text: name};
@@ -16,6 +52,7 @@ export async function createTest(name) {
     return response.data
   } catch (error) {
     console.error('Error:', error);
+    throw error;
   }
 }
 
@@ -26,6 +63,7 @@ export async function readTest() {
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
+    throw error;
   }
 }
 

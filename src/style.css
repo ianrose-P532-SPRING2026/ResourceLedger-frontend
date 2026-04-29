@@ -1,0 +1,83 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, #root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.resource-list {
+    padding: 20px;
+    border: 2px solid black;
+}
+
+.protocol-node {
+    padding: 20px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+} 
+
+.step-node {
+    padding: 20px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+.protocol-view {
+    display: flex;
+    height: 100dvh;
+    width: 100dvw;
+    box-sizing: border-box; 
+    overflow: auto;
+}
+
+.protocol-view h1 {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.link {
+    margin: 10px;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+.protocol-window {
+    border: 1px solid black;
+    background-color: rgb(240, 240, 240);
+    width: 100%;
+    height: 100%;
+}
+
+.protocol-list {
+    width: 20%;
+    height: 100%;
+    border: 1px solid black;
+    overflow: scroll;
+}
+
+.protocol-list h3 {
+    padding-left: 10px;
+}
+
+.protocol-list button {
+    margin: 5px;
+    padding: 5px;
+}
+
+.protocol-listing {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 20px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border: 1px solid black;
+}

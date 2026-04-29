@@ -1,51 +1,25 @@
-import { useState, useEffect } from 'react'
-import { readTest, deleteTest } from './services/api';
+import { HashRouter, Routes, Route } from "react-router-dom"
 
+import Home from "./pages/Home";
+import TestPage from "./Pages/TestPage";
+import Resources from "./pages/Resources";
+import Accounts from "./pages/Accounts";
+import Protocols from "./pages/Protocols";
 
-import CreateTestForm from './components/CreateTestForm';
-
+//might need this later idk
+//<HashRouter basename='/ResourceLedger-frontend'></HashRouter>
 function App() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const objects = await readTest();
-      setData(objects);
-      setLoading(false);
-    };
-
-    fetchUsers();
-  }, []);
-
-
-  function handleDelete(id) {
-
-  }
-
-  function onUpdate(newData) {
-    setData(prevData => [...prevData, newData]);
-  }
-  
-
-
-  if (loading) return <p>Loading...</p>;
-  //<button onClick={() => handleUpdate(item.id)}>Update</button>
   return (
-    <div>
-      <p>hi :)</p>
-      <ul>
-        {data.map(item => (
-          <li key={item.id}>
-            {item.text}
-          </li>
-        ))}
-      </ul>
-
-      <CreateTestForm onUpdate={onUpdate}></CreateTestForm>
-
-    </div>
-  )
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/test" element={<TestPage />} />
+        <Route path="/resources" element={<Resources />} />
+        <Route path="/accounts" element={<Accounts />} />
+        <Route path="/protocols" element={<Protocols />} />
+      </Routes>
+    </HashRouter>
+  );
 }
 
 export default App
