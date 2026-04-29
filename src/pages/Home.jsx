@@ -4,12 +4,11 @@ function Home() {
 
     return (
         <div>
-            <h1>haiiii</h1>
-            <Link to="/test">Test Page :3</Link>
+            <h1>home</h1>
             <br/>
-            <Link to="/resources">Resource Page :3</Link>
+            <Link to="/resources">Resource Page</Link>
             <br/>
-            <Link to="/accounts">Account Page :3</Link>
+            <Link to="/accounts">Account Page</Link>
             <br/>
             <Link to="/protocols">protocols</Link>
             <br/>
