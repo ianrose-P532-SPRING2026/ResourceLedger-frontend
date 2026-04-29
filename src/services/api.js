@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const host = axios.create({
   //baseURL: "http://localhost:8080/api",
-  baseURL: "https://ianroseresourceledgerweek1.onrender.com",
+  baseURL: "https://ianroseresourceledgerweek1.onrender.com/api",
   timeout: 30000,
 });
 
