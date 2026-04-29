@@ -1,7 +1,7 @@
 import { HashRouter, Routes, Route } from "react-router-dom"
 
 import Home from "./pages/Home";
-import TestPage from "./Pages/TestPage";
+import TestPage from "./pages/TestPage";
 import Resources from "./pages/Resources";
 import Accounts from "./pages/Accounts";
 import Protocols from "./pages/Protocols";
