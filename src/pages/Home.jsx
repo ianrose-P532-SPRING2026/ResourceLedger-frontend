@@ -12,6 +12,8 @@ function Home() {
             <Link to="/accounts">Account Page :3</Link>
             <br/>
             <Link to="/protocols">protocols</Link>
+            <br/>
+            <Link to="/plans">plans</Link>
         </div>
     )
 }

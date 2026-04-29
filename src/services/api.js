@@ -28,6 +28,9 @@ export async function readAccounts() {
 }
 
 
+
+
+
 export async function readProtocols() {
   const response = await host.get(`/protocols`);
   return response;
@@ -39,6 +42,27 @@ export async function createProtocol(name, description, steps) {
   const response = await host.post(`/protocols`, request);
   return response;
 }
+
+export async function planProtocol(id) {
+  const response = await host.post(`/protocols/${id}/plan`);
+  return response;
+}
+
+
+
+export async function readPlans() {
+  const response = await host.get(`/plans`);
+  return response;
+}
+
+
+
+
+export async function setActionState(id, state) {
+  const response = await host.post(`/actions/${id}/${state}`);
+  return response;
+}
+
 
 
 

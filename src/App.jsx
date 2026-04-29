@@ -5,6 +5,7 @@ import TestPage from "./Pages/TestPage";
 import Resources from "./pages/Resources";
 import Accounts from "./pages/Accounts";
 import Protocols from "./pages/Protocols";
+import Plans from "./pages/Plans";
 
 //might need this later idk
 //<HashRouter basename='/ResourceLedger-frontend'></HashRouter>
@@ -17,6 +18,7 @@ function App() {
         <Route path="/resources" element={<Resources />} />
         <Route path="/accounts" element={<Accounts />} />
         <Route path="/protocols" element={<Protocols />} />
+        <Route path="/plans" element={<Plans />} />
       </Routes>
     </HashRouter>
   );

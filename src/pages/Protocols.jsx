@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 
 import '../style.css';
 
-import { readAccounts, readProtocols } from '../services/api';
+import { planProtocol, readProtocols, createProtocol } from '../services/api';
 import AccountListing from '../components/AccountListing';
 import ProtocolNode from '../components/ProtocolNode';
 import ProtocolStepNode from '../components/ProtocolStepNode';
-import { createProtocol } from '../services/api';
 import CreateProtocolDialog from '../components/CreateProtocolDialog';
 import ProtocolView from '../components/ProtocolView';
 
@@ -54,6 +53,11 @@ function Protocols() {
     setData(prevData => [...prevData, newData]);
   }
 
+  async function planProto(protocol) {
+    const response = await planProtocol(protocol.id);
+    console.log(response);
+  }
+
   if (loading) {
     return (
       <div>
@@ -81,6 +85,7 @@ function Protocols() {
             <li key={`${proto.id}`} className='protocol-listing'>
               <span>{proto.name}</span>
               <button onClick={() => setProtocol(proto)}>View</button>
+              <button onClick={() => planProto(proto)}>Plan</button>
             </li>
           ))}
         </ul>

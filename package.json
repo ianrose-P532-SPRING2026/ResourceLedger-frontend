@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": ".",
+  "homepage": "https://ianrose-p532-spring2026.github.io/ResourceLedger-frontend/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
