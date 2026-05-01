@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
 import '../style.css';
-import NavBar from '../components/navbar';
+import NavBar from '../components/NavBar.jsx';
 
 
 import { readAccounts } from '../services/api';

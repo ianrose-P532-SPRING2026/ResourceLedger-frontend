@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { readResources } from '../services/api';
 import '../style.css';
 
-import NavBar from '../components/navbar';
+import NavBar from '../components/NavBar.jsx';
 
 
 import CreateConsumableDialog from '../components/CreateResourceDialog';

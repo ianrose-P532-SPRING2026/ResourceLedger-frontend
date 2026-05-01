@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { readLogs } from '../services/api';
 import '../style.css';
 
-import NavBar from '../components/navbar';
+import NavBar from '../components/NavBar.jsx';
 
 function TransactionLogs() {
   const [data, setData] = useState([]);

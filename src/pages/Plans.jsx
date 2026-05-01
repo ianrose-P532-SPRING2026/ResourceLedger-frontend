@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import '../style.css';
 
-import NavBar from '../components/navbar';
+import NavBar from '../components/NavBar.jsx';
 
 import { planProtocol, readProtocols, createProtocol, readPlans, setActionState, readResources } from '../services/api';
 import AccountListing from '../components/AccountListing';
