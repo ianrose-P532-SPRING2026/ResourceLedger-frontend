@@ -8,6 +8,11 @@ export const host = axios.create({
 });
 
 
+export async function createAsset(name, ids) {
+  const request = {name: name, assetTypeIds: ids};
+  const response = await host.post(`/resource-types/assets`, request);
+  return response;
+}
 
 export async function createResource(name, kind, unit) {
   const request = {name: name, kind: kind, unit: unit};
@@ -38,7 +43,6 @@ export async function readProtocols() {
 
 export async function createProtocol(name, description, steps) {
   const request = {name: name, description: description, steps: steps};
-  console.log(request);
   const response = await host.post(`/protocols`, request);
   return response;
 }
@@ -48,6 +52,10 @@ export async function planProtocol(id) {
   return response;
 }
 
+export async function readLogs() {
+  const response = await host.get(`/logs`);
+  return response;
+}
 
 
 export async function readPlans() {
@@ -55,17 +63,38 @@ export async function readPlans() {
   return response;
 }
 
-
-
-
-export async function setActionState(id, state) {
-  const response = await host.post(`/actions/${id}/${state}`);
+export async function getPlanSummary(id) {
+  const response = await host.get(`/plans/${id}/report`);
   return response;
 }
 
 
 
 
+export async function setActionState(id, state) {
+  const request = {suspendReason: "", suspensionEnd: null};
+  const response = await host.post(`/actions/${id}/${state}`, request);
+  return response;
+}
+
+export async function suspendAction(id, suspendReason, suspensionEnd) {
+  const request = {suspendReason: suspendReason, suspensionEnd: suspensionEnd};
+  const response = await host.post(`/actions/${id}/suspend`, request);
+  return response;
+}
+
+export async function allocateGeneric(actionId, resourceId, amount) {
+  const request = {actionId: actionId, resourceId: resourceId, type: "GENERAL", amount: amount};
+  const response = await host.post(`/actions/allocation`, request);
+  return response;
+}
+
+
+export async function allocateSpecific(actionId, assetId, startTime, endTime) {
+  const request = {actionId: actionId, resourceId: null, type: "SPECIFIC", amount: null, assetId: assetId, startTime: startTime, endTime: endTime};
+  const response = await host.post(`/actions/allocation`, request);
+  return response;
+}
 
 export async function createTest(name) {
   const request = {text: name};

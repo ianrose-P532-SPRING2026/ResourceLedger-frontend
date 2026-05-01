@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
+
 import '../style.css';
+import NavBar from '../components/navbar';
+
 
 import { readAccounts } from '../services/api';
 import AccountListing from '../components/AccountListing';
+import CreateConsumableDialog from '../components/CreateResourceDialog';
 
-
-function Accounts() {
+function Dashboard() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -17,9 +20,9 @@ function Accounts() {
         
         const status = response.status;
         const statusText = response.statusText;
-        console.log(`${status}: ${statusText}`);
-
+        
         const objects = response.data;
+        console.log(objects);
         setData(objects);
         setLoading(false);
       } 
@@ -56,9 +59,10 @@ function Accounts() {
   if (loading) {
     return (
       <div>
-        <p>Resource Page :3</p>
-        <h3>Resource Types:</h3>
-        <ul>
+        <NavBar/>
+        <h1>Dashboard</h1>
+        <h3>All Pool Accounts: </h3>
+        <ul className='resource-list'>
           Loading...
         </ul>
       </div>
@@ -67,9 +71,9 @@ function Accounts() {
 
   return (
     <div>
-      <h1>Accounts</h1>
-      <Link to="/">Home</Link>
-      <h3>All Accounts</h3>
+      <NavBar/>
+      <h1>Dashboard</h1>
+      <h3>All Pool Accounts: </h3>
       <ul className='resource-list'>
         {data.map(account => (
           <li key={account.id}>
@@ -81,4 +85,4 @@ function Accounts() {
   )
 }
 
-export default Accounts
+export default Dashboard

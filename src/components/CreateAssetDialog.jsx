@@ -1,25 +1,25 @@
 import { useState, useRef, useEffect } from 'react';
+import Select from 'react-select';
 
-import { createResource } from "../services/api";
+import { createAsset } from "../services/api";
 
-function CreateConsumableDialog({ onUpdate, disabled }) {
+function CreateAssetDialog({ onUpdate, disabled, allTypes }) {
   const dialogRef = useRef(null);
   const openModal = () => dialogRef.current.showModal();
   const closeModal = () => dialogRef.current.close();
 
   const [name, setName] = useState('');
-  const [unit, setUnit] = useState('');
+  const [selectedTypes, setSelectedTypes] = useState([]);
 
 
   const onOpen = () => {
     setName('');
-    setUnit('');
+    setSelectedTypes([]);
+    console.log(allTypes);
     openModal();
   }
 
   const onCancel = () => {
-    setName('');
-    setUnit('');
     closeModal();
   }
 
@@ -27,13 +27,10 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
     e.preventDefault();
   
     console.log('Submitted name:', name);
-    console.log('Submitted unit:', unit);
+    console.log('Submitted ids:', selectedTypes);
     
     try {
-      const result = await createResource(name, "CONSUMABLE", unit);
-      const status = result.status;
-      const statusText = result.statusText;
-      console.log(`${status}: ${statusText}`)
+      const result = await createAsset(name, selectedTypes.map(type => type.id));
       onUpdate(result.data);
     }
     
@@ -59,17 +56,17 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
   if (disabled == true) {
     return (
       <>
-        <button disabled>Create Consumable Type</button>
+        <button disabled>Create Asset</button>
       </>    
     );
   }
 
   return (
     <>
-      <button onClick={onOpen}>Create Consumable Type</button>
-      <dialog ref={dialogRef} style={{ padding: '20px' }}>
+      <button onClick={onOpen}>Create Asset</button>
+      <dialog ref={dialogRef} style={{ padding: '30px' }}>
         <form onSubmit={onSubmit}>
-          <h3>Create Consumable Type</h3>
+          <h3>Create Asset</h3>
 
           <label>Name: 
             <input 
@@ -80,16 +77,17 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
             />
           </label>
 
+          <label>Types: </label>
+          <Select
+            options={allTypes}
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.id}            
+            onChange={setSelectedTypes}
+            isMulti
+            isSearchable
+          />
 
-          <label>Unit: 
-            <input 
-              type="text" 
-              value={unit}
-              required
-              onChange={(e) => setUnit(e.target.value)} 
-            />
-          </label>
-
+          
           <button type="submit">Submit</button>
           <button type="button" onClick={onCancel}>Cancel</button>
         </form>
@@ -98,4 +96,4 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
   );
 }
 
-export default CreateConsumableDialog
+export default CreateAssetDialog

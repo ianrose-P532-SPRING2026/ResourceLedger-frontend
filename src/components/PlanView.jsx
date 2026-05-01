@@ -73,7 +73,7 @@ function PlanView({ plan, carryUp }) {
     const edgesAcc = [];
 
     const traverse = (node, parent = null) => {
-      if (node.nodeType == "ACTION") {
+      if (node.nodeType == "PROPOSAL") {
         nodesAcc.push({
           id: String(node.id),
           data: { action: node, carryUp: carryUp},

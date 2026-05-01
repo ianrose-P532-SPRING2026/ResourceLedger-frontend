@@ -2,24 +2,21 @@ import { useState, useRef, useEffect } from 'react';
 
 import { createResource } from "../services/api";
 
-function CreateConsumableDialog({ onUpdate, disabled }) {
+function CreateAssetTypeDialog({ onUpdate, disabled }) {
   const dialogRef = useRef(null);
   const openModal = () => dialogRef.current.showModal();
   const closeModal = () => dialogRef.current.close();
 
   const [name, setName] = useState('');
-  const [unit, setUnit] = useState('');
 
 
   const onOpen = () => {
     setName('');
-    setUnit('');
     openModal();
   }
 
   const onCancel = () => {
     setName('');
-    setUnit('');
     closeModal();
   }
 
@@ -27,13 +24,9 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
     e.preventDefault();
   
     console.log('Submitted name:', name);
-    console.log('Submitted unit:', unit);
     
     try {
-      const result = await createResource(name, "CONSUMABLE", unit);
-      const status = result.status;
-      const statusText = result.statusText;
-      console.log(`${status}: ${statusText}`)
+      const result = await createResource(name, "ASSET", null);
       onUpdate(result.data);
     }
     
@@ -59,19 +52,19 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
   if (disabled == true) {
     return (
       <>
-        <button disabled>Create Consumable Type</button>
+        <button disabled>Create Asset Type</button>
       </>    
     );
   }
 
   return (
     <>
-      <button onClick={onOpen}>Create Consumable Type</button>
+      <button onClick={onOpen}>Create Asset Type</button>
       <dialog ref={dialogRef} style={{ padding: '20px' }}>
         <form onSubmit={onSubmit}>
-          <h3>Create Consumable Type</h3>
+          <h3>Create Asset Type</h3>
 
-          <label>Name: 
+          <label>Type: 
             <input 
               type="text" 
               value={name}
@@ -79,17 +72,6 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
               onChange={(e) => setName(e.target.value)} 
             />
           </label>
-
-
-          <label>Unit: 
-            <input 
-              type="text" 
-              value={unit}
-              required
-              onChange={(e) => setUnit(e.target.value)} 
-            />
-          </label>
-
           <button type="submit">Submit</button>
           <button type="button" onClick={onCancel}>Cancel</button>
         </form>
@@ -98,4 +80,4 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
   );
 }
 
-export default CreateConsumableDialog
+export default CreateAssetTypeDialog

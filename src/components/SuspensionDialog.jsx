@@ -1,39 +1,36 @@
 import { useState, useRef, useEffect } from 'react';
+import { suspendAction } from "../services/api";
 
-import { createResource } from "../services/api";
-
-function CreateConsumableDialog({ onUpdate, disabled }) {
+function SuspensionDialog({ onUpdate, disabled, action }) {
   const dialogRef = useRef(null);
   const openModal = () => dialogRef.current.showModal();
   const closeModal = () => dialogRef.current.close();
 
-  const [name, setName] = useState('');
-  const [unit, setUnit] = useState('');
+  const [reason, setReason] = useState('');
+  const [end, setEnd] = useState('');
 
 
   const onOpen = () => {
-    setName('');
-    setUnit('');
+    setReason('');
+    setEnd('');
     openModal();
   }
 
   const onCancel = () => {
-    setName('');
-    setUnit('');
     closeModal();
   }
 
   const onSubmit = async (e) => {
     e.preventDefault();
   
-    console.log('Submitted name:', name);
-    console.log('Submitted unit:', unit);
+    console.log('Submitted reason:', reason);
+    console.log('Submitted end:', end);
     
     try {
-      const result = await createResource(name, "CONSUMABLE", unit);
-      const status = result.status;
-      const statusText = result.statusText;
-      console.log(`${status}: ${statusText}`)
+      const endDate = new Date(end);  
+      const iso = endDate.toISOString();
+
+      const result = await suspendAction(action.id, reason, iso);
       onUpdate(result.data);
     }
     
@@ -59,37 +56,39 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
   if (disabled == true) {
     return (
       <>
-        <button disabled>Create Consumable Type</button>
+        <button disabled>Suspend</button>
+        <br/>
       </>    
     );
   }
 
   return (
     <>
-      <button onClick={onOpen}>Create Consumable Type</button>
-      <dialog ref={dialogRef} style={{ padding: '20px' }}>
+      <button onClick={onOpen}>Suspend</button>
+      <br/>
+      <dialog ref={dialogRef} style={{ padding: '30px' }}>
         <form onSubmit={onSubmit}>
-          <h3>Create Consumable Type</h3>
+          <h3>Suspension</h3>
 
-          <label>Name: 
+          <label>Reason: 
             <input 
               type="text" 
-              value={name}
+              value={reason}
               required
-              onChange={(e) => setName(e.target.value)} 
+              onChange={(e) => setReason(e.target.value)} 
             />
           </label>
 
-
-          <label>Unit: 
+          <label>End Date (optional): 
             <input 
-              type="text" 
-              value={unit}
-              required
-              onChange={(e) => setUnit(e.target.value)} 
+              type="datetime-local" 
+              value={end}
+              onChange={(e) => setEnd(e.target.value)} 
             />
           </label>
-
+          <br/>
+          <br/>
+          
           <button type="submit">Submit</button>
           <button type="button" onClick={onCancel}>Cancel</button>
         </form>
@@ -98,4 +97,4 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
   );
 }
 
-export default CreateConsumableDialog
+export default SuspensionDialog

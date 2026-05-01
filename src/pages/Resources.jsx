@@ -4,11 +4,19 @@ import { Link } from 'react-router-dom';
 import { readResources } from '../services/api';
 import '../style.css';
 
+import NavBar from '../components/navbar';
 
-import CreateResourceDialog from '../components/CreateResourceDialog';
+
+import CreateConsumableDialog from '../components/CreateResourceDialog';
+import CreateAssetTypeDialog from '../components/CreateAssetTypeDialog';
+import ConsumableListing from '../components/ConsumableListing';
+import AssetTypeListing from '../components/AssetTypeListing';
+import CreateAssetDialog from '../components/CreateAssetDialog';
 
 function Resources() {
   const [data, setData] = useState([]);
+  const [consumables, setConsumables] = useState([]);
+  const [assetTypes, setAssetTypes] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,13 +51,33 @@ function Resources() {
     fetchData();
   }, []);
 
+    useEffect(() => {
+      const consumableAcc = [];
+      const assetAcc = [];
+
+      data.forEach((resource) => {
+        if (resource.kind == "ASSET") {
+          assetAcc.push(resource);
+        } else {
+          consumableAcc.push(resource);
+        }
+      });
+
+      setAssetTypes(assetAcc);
+      setConsumables(consumableAcc);
+    }, [data]);
+
 
   function handleDelete(id) {
 
   }
 
-  function onUpdate(newData) {
-    setData(prevData => [...prevData, newData]);
+  function onUpdateAssets(newData) {
+    setAssetTypes(prevData => [...prevData, newData]);
+  }
+
+  function onUpdateConsum(newData) {
+    setConsumables(prevData => [...prevData, newData]);
   }
   
 
@@ -57,32 +85,52 @@ function Resources() {
   if (loading) {
     return (
       <div>
+        <NavBar/>
         <h1>Resources</h1>
-        <Link to="/">Home</Link>
         <h3>Resource Types:</h3>
         <ul>
           Loading...
         </ul>
-
-        <CreateResourceDialog disabled={true} onUpdate={onUpdate}></CreateResourceDialog>
       </div>
     );
   } 
 
   return (
     <div>
+      <NavBar/>
       <h1>Resources</h1>
-      <Link to="/">Home</Link>
-      <h3>Resource Types:</h3>
-      <ul className='resource-list'>
-        {data.map(item => (
-          <li key={item.id}>
-            {item.name}, {item.unit}
-          </li>
-        ))}
-      </ul>
+      <div className='resource-page-split'>
+        <div>
+          <h3>Consumable Types:</h3>
+          <CreateConsumableDialog disabled={false} onUpdate={onUpdateConsum}/>
+          <ul className='resource-list'>
+            {consumables.map(consumable => (
+              <li key={consumable.id}>
+                <ConsumableListing consumable={consumable}/>
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+        <div>
+          <h3>Asset Types:</h3>
+          <CreateAssetTypeDialog disabled={false} onUpdate={onUpdateAssets}/>
+          <CreateAssetDialog disabled={false} onUpdate={onUpdateAssets} allTypes={assetTypes}/>
+          <ul className='resource-list'>
+            {assetTypes.map(assetType => (
+              <li key={assetType.id}>
+                <AssetTypeListing assetType={assetType}/>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      
+      
+      
 
-      <CreateResourceDialog disabled={false} onUpdate={onUpdate}></CreateResourceDialog>
+      
+      
     </div>
   )
 }

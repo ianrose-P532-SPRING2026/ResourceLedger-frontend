@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import '../style.css';
 
+import NavBar from '../components/navbar';
+
 import { planProtocol, readProtocols, createProtocol } from '../services/api';
 import AccountListing from '../components/AccountListing';
 import ProtocolNode from '../components/ProtocolNode';
@@ -61,8 +63,8 @@ function Protocols() {
   if (loading) {
     return (
       <div>
+        <NavBar/>
         <h1>Protocols</h1>
-        <Link to="/">Home</Link>
         <h3>All Protocols:</h3>
         <ul>
           Loading...
@@ -72,55 +74,27 @@ function Protocols() {
       </div>
     );
   } 
-
   return (
-    <div className='protocol-view'>
-      <div className='protocol-list'>
-        <h1>Protocols</h1>
-        <Link className='link' to="/">Home</Link>
-        <h3>All Protocols:</h3>
-        <CreateProtocolDialog disabled={false} onUpdate={onUpdate} protocols={data}></CreateProtocolDialog>
-        <ul>
-          {data.map(proto => (
-            <li key={`${proto.id}`} className='protocol-listing'>
-              <span>{proto.name}</span>
-              <button onClick={() => setProtocol(proto)}>View</button>
-              <button onClick={() => planProto(proto)}>Plan</button>
-            </li>
-          ))}
-        </ul>
+    <>
+      <NavBar/>
+      <div className='protocol-view'>
+        <div className='protocol-list'>
+          <h1>Protocols</h1>
+          <h3>All Protocols:</h3>
+          <CreateProtocolDialog disabled={false} onUpdate={onUpdate} protocols={data}></CreateProtocolDialog>
+          <ul>
+            {data.map(proto => (
+              <li key={`${proto.id}`} className='protocol-listing'>
+                <span>{proto.name}</span>
+                <button onClick={() => setProtocol(proto)}>View</button>
+                <button onClick={() => planProto(proto)}>Plan</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <ProtocolView protocol={protocol}></ProtocolView>
       </div>
-      <ProtocolView protocol={protocol}></ProtocolView>
-    </div>
-
-      /*
-      <ul className='protocol-list'>
-        {data.map(item => (
-          <li key={`${item.id}`}>
-            {item.name}, {item.desc}
-            <ul>
-              {item.steps.map(step => (
-                <li key={`${item.id}-${step.id}`}>
-                  {step.name}
-                  <br/>
-                  {step.next && <span>Sub-protocol: {step.next.name}</span>}
-                  {!step.next && <span>Sub-protocol: None</span>}
-                  <br/>
-                  {step.dependencies.length > 0 && <ul>
-                    {step.dependencies.map(depend => (
-                      <li key={`${item.id}-${step.id}-${depend.id}`}>
-                        {depend.name}
-                      </li>
-                    ))}
-                  </ul>
-                  }
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ul>
-      */
+    </>
   )
 }
 
