@@ -1,32 +1,31 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { createResource } from "../services/api";
+import { updateResource } from "../../services/api";
 
-function CreateAssetTypeDialog({ onUpdate, disabled }) {
+export default function UpdateConsumableDialog({ onUpdate, consumable }) {
   const dialogRef = useRef(null);
   const openModal = () => dialogRef.current.showModal();
   const closeModal = () => dialogRef.current.close();
 
   const [name, setName] = useState('');
+  const [unit, setUnit] = useState('');
 
 
   const onOpen = () => {
-    setName('');
+    setName(consumable.name);
+    setUnit(consumable.unit);
     openModal();
   }
 
   const onCancel = () => {
-    setName('');
     closeModal();
   }
 
   const onSubmit = async (e) => {
     e.preventDefault();
-  
-    console.log('Submitted name:', name);
     
     try {
-      const result = await createResource(name, "ASSET", null);
+      const result = await updateResource(consumable.id, name, "CONSUMABLE", unit, 0);
       onUpdate(result.data);
     }
     
@@ -35,12 +34,15 @@ function CreateAssetTypeDialog({ onUpdate, disabled }) {
         const status = error.response.status;
         const statusText = error.response.statusText;
         const details = error.response.data;
-        alert(`ERR ${status}: ${details}`);
+        const body = JSON.stringify(details);
+        console.log(details);
+        alert(`ERR ${status}: ${body}`);
       }
       else if (error.request) {
-        alert(`No response.`);
+        alert(`Request Error ${error.code}\nDetails: ${error.request}`);
+        console.log("Request Details:", error.request);
       } else {
-        alert(`Unknown error: ${error.message}`)
+        alert(`Error: ${error.message}`)
       }
     }
 
@@ -49,22 +51,15 @@ function CreateAssetTypeDialog({ onUpdate, disabled }) {
     }
   };
 
-  if (disabled == true) {
-    return (
-      <>
-        <button disabled>Create Asset Type</button>
-      </>    
-    );
-  }
-
+  
   return (
     <>
-      <button onClick={onOpen}>Create Asset Type</button>
+      <button onClick={onOpen}>Update</button>
       <dialog ref={dialogRef} style={{ padding: '20px' }}>
         <form onSubmit={onSubmit}>
-          <h3>Create Asset Type</h3>
+          <h3>Update Consumable Type</h3>
 
-          <label>Type: 
+          <label>Name: 
             <input 
               type="text" 
               value={name}
@@ -72,6 +67,18 @@ function CreateAssetTypeDialog({ onUpdate, disabled }) {
               onChange={(e) => setName(e.target.value)} 
             />
           </label>
+
+
+          <label>Unit: 
+            <input 
+              type="text" 
+              value={unit}
+              required
+              onChange={(e) => setUnit(e.target.value)} 
+            />
+          </label>
+          <br/>
+
           <button type="submit">Submit</button>
           <button type="button" onClick={onCancel}>Cancel</button>
         </form>
@@ -79,5 +86,3 @@ function CreateAssetTypeDialog({ onUpdate, disabled }) {
     </>
   );
 }
-
-export default CreateAssetTypeDialog

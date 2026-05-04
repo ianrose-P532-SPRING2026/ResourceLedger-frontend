@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Select from 'react-select';
 
-import { createAsset } from "../services/api";
+import { createAsset } from "../../services/api";
 
 function CreateAssetDialog({ onUpdate, disabled, allTypes }) {
   const dialogRef = useRef(null);
@@ -15,7 +15,6 @@ function CreateAssetDialog({ onUpdate, disabled, allTypes }) {
   const onOpen = () => {
     setName('');
     setSelectedTypes([]);
-    console.log(allTypes);
     openModal();
   }
 
@@ -39,12 +38,15 @@ function CreateAssetDialog({ onUpdate, disabled, allTypes }) {
         const status = error.response.status;
         const statusText = error.response.statusText;
         const details = error.response.data;
-        alert(`ERR ${status}: ${details}`);
+        const body = JSON.stringify(details);
+        console.log(details);
+        alert(`ERR ${status}: ${body}`);
       }
       else if (error.request) {
-        alert(`No response.`);
+        alert(`Request Error ${error.code}\nDetails: ${error.request}`);
+        console.log("Request Details:", error.request);
       } else {
-        alert(`Unknown error: ${error.message}`)
+        alert(`Error: ${error.message}`)
       }
     }
 

@@ -5,11 +5,11 @@ import '../style.css';
 
 import NavBar from '../components/NavBar.jsx';
 
-import { planProtocol, readProtocols, createProtocol } from '../services/api';
-import AccountListing from '../components/AccountListing';
+import { planProtocol, readProtocols, createProtocol, deleteProtocol } from '../services/api';
+import AccountListing from '../components/Listings/AccountListing.jsx';
 import ProtocolNode from '../components/ProtocolNode';
 import ProtocolStepNode from '../components/ProtocolStepNode';
-import CreateProtocolDialog from '../components/CreateProtocolDialog';
+import CreateProtocolDialog from '../components/Dialogs/CreateProtocolDialog.jsx';
 import ProtocolView from '../components/ProtocolView';
 
 
@@ -37,7 +37,9 @@ function Protocols() {
           const status = error.response.status;
           const statusText = error.response.statusText;
           const details = error.response.data;
-          alert(`ERR ${status}: ${details}`);
+          const body = JSON.stringify(details);
+          console.log(details);
+          alert(`ERR ${status}: ${body}`);
         }
         else if (error.request) {
           alert(`Request Error ${error.code}\nDetails: ${error.request}`);
@@ -55,9 +57,30 @@ function Protocols() {
     setData(prevData => [...prevData, newData]);
   }
 
+  function onDelete(newData) {
+    setData(data.filter(item => item.id !== newData.id));
+    setProtocol(null);
+  }
+
   async function planProto(protocol) {
     const response = await planProtocol(protocol.id);
     console.log(response);
+    alert("Plan generated.");
+  }
+
+  async function updateProto(protocol) {
+    //const response = await deleteProtocol(protocol.id);
+    //console.log(response);
+    alert("oops this doesnt work yet :(");
+  }
+
+  async function deleteProto(protocol) {
+    if (!confirm(`Are you sure you want to delete ${protocol.name}?`)) return;
+
+    const response = await deleteProtocol(protocol.id);
+    console.log(response);
+
+    onDelete(protocol);
   }
 
   if (loading) {
@@ -87,6 +110,8 @@ function Protocols() {
               <li key={`${proto.id}`} className='protocol-listing'>
                 <span>{proto.name}</span>
                 <button onClick={() => setProtocol(proto)}>View</button>
+                
+                <button onClick={() => deleteProto(proto)}>Delete</button>
                 <button onClick={() => planProto(proto)}>Plan</button>
               </li>
             ))}
@@ -97,5 +122,5 @@ function Protocols() {
     </>
   )
 }
-
+//<button onClick={() => updateProto(proto)}>Edit</button>
 export default Protocols

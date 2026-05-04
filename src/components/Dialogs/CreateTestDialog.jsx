@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { createTest } from "../services/api";
+import { createTest } from "../../services/api";
 
 function CreateTestDialog({ onUpdate, disabled }) {
   const dialogRef = useRef(null);

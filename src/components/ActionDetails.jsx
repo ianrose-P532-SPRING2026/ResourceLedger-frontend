@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import '../style.css';
 
 import { setActionState, readResources } from "../services/api";
-import GenericResourceAllocationDialog from "./GenericResourceAllocationDialog";
-import SuspensionDialog from "./SuspensionDialog";
+import GenericResourceAllocationDialog from "./Dialogs/GenericResourceAllocationDialog";
+import SuspensionDialog from "./Dialogs/SuspensionDialog";
 
 export default function ActionDetails({ action, onUpdate }) {
     const [implementing, setimplementing] = useState(true);

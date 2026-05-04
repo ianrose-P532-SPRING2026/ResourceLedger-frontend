@@ -6,10 +6,10 @@ import '../style.css';
 import NavBar from '../components/NavBar.jsx';
 
 import { planProtocol, readProtocols, createProtocol, readPlans, setActionState, readResources } from '../services/api';
-import AccountListing from '../components/AccountListing';
+import AccountListing from '../components/Listings/AccountListing.jsx';
 import ProtocolNode from '../components/ProtocolNode';
 import ProtocolStepNode from '../components/ProtocolStepNode';
-import CreateProtocolDialog from '../components/CreateProtocolDialog';
+import CreateProtocolDialog from '../components/Dialogs/CreateProtocolDialog.jsx';
 import ProtocolView from '../components/ProtocolView';
 import PlanView from '../components/PlanView';
 import PlanSummaryView from '../components/PlanSummaryView';
@@ -51,7 +51,9 @@ function Plans() {
           const status = error.response.status;
           const statusText = error.response.statusText;
           const details = error.response.data;
-          alert(`ERR ${status}: ${details}`);
+          const body = JSON.stringify(details);
+          console.log(details);
+          alert(`ERR ${status}: ${body}`);
         }
         else if (error.request) {
           alert(`Request Error ${error.code}\nDetails: ${error.request}`);

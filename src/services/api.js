@@ -8,14 +8,10 @@ export const host = axios.create({
 });
 
 
-export async function createAsset(name, ids) {
-  const request = {name: name, assetTypeIds: ids};
-  const response = await host.post(`/resource-types/assets`, request);
-  return response;
-}
 
-export async function createResource(name, kind, unit) {
-  const request = {name: name, kind: kind, unit: unit};
+
+export async function createResource(name, kind, unit, amount) {
+  const request = {name: name, kind: kind, unit: unit, startingBalance: amount};
   const response = await host.post(`/resource-types`, request);
   return response;
 }
@@ -25,9 +21,42 @@ export async function readResources() {
     return response;
 }
 
+export async function updateResource(id, name, kind, unit, amount) {
+  const request = {name: name, kind: kind, unit: unit, startingBalance: amount};
+  const response = await host.put(`/resource-types/${id}`, request);
+  return response;
+}
+
+export async function deleteResource(id) {
+  const response = await host.delete(`/resource-types/${id}`);
+  return response;
+}
 
 
-export async function readAccounts() {
+export async function createAsset(name, ids) {
+  const request = {name: name, assetTypeIds: ids};
+  const response = await host.post(`/assets`, request);
+  return response;
+}
+
+export async function readAssets() {
+    const response = await host.get(`/assets`);
+    return response;
+}
+
+export async function deleteAsset(id) {
+  const response = await host.delete(`/assets/${id}`);
+  return response;
+}
+
+
+
+export async function readPoolAccounts() {
+  const response = await host.get(`/accounts/pools`);
+  return response;
+}
+
+export async function readAllAccounts() {
   const response = await host.get(`/accounts`);
   return response;
 }
@@ -46,6 +75,13 @@ export async function createProtocol(name, description, steps) {
   const response = await host.post(`/protocols`, request);
   return response;
 }
+
+
+export async function deleteProtocol(id) {
+  const response = await host.delete(`/protocols/${id}`);
+  return response;
+}
+
 
 export async function planProtocol(id) {
   const response = await host.post(`/protocols/${id}/plan`);

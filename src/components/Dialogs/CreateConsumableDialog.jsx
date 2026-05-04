@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 
-import { createResource } from "../services/api";
+import { createResource } from "../../services/api";
 
 function CreateConsumableDialog({ onUpdate, disabled }) {
   const dialogRef = useRef(null);
@@ -9,11 +9,13 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
 
   const [name, setName] = useState('');
   const [unit, setUnit] = useState('');
+  const [amount, setAmount] = useState("0");
 
 
   const onOpen = () => {
     setName('');
     setUnit('');
+    setAmount("0.00");
     openModal();
   }
 
@@ -25,12 +27,9 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-  
-    console.log('Submitted name:', name);
-    console.log('Submitted unit:', unit);
     
     try {
-      const result = await createResource(name, "CONSUMABLE", unit);
+      const result = await createResource(name, "CONSUMABLE", unit, amount);
       const status = result.status;
       const statusText = result.statusText;
       console.log(`${status}: ${statusText}`)
@@ -42,12 +41,15 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
         const status = error.response.status;
         const statusText = error.response.statusText;
         const details = error.response.data;
-        alert(`ERR ${status}: ${details}`);
+        const body = JSON.stringify(details);
+        console.log(details);
+        alert(`ERR ${status}: ${body}`);
       }
       else if (error.request) {
-        alert(`No response.`);
+        alert(`Request Error ${error.code}\nDetails: ${error.request}`);
+        console.log("Request Details:", error.request);
       } else {
-        alert(`Unknown error: ${error.message}`)
+        alert(`Error: ${error.message}`)
       }
     }
 
@@ -87,6 +89,19 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
               value={unit}
               required
               onChange={(e) => setUnit(e.target.value)} 
+            />
+          </label>
+
+          <br/>
+
+          <label>Starting Balance: 
+            <input 
+              type="number"
+              step="any" 
+              value={amount}
+              min="0"
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder='0.00'
             />
           </label>
 

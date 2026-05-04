@@ -5,18 +5,18 @@ import '../style.css';
 import NavBar from '../components/NavBar.jsx';
 
 
-import { readPoolAccounts } from '../services/api';
+import { readAllAccounts } from '../services/api.js';
 import AccountListing from '../components/Listings/AccountListing.jsx';
 import CreateConsumableDialog from '../components/Dialogs/CreateConsumableDialog.jsx';
 
-function Dashboard() {
+function Accounts() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await readPoolAccounts();
+        const response = await readAllAccounts();
         
         const status = response.status;
         const statusText = response.statusText;
@@ -48,22 +48,12 @@ function Dashboard() {
   }, []);
 
 
-  function handleDelete(id) {
-
-  }
-
-  function onUpdate(newData) {
-    setData(prevData => [...prevData, newData]);
-  }
-  
-
-
   if (loading) {
     return (
       <div>
         <NavBar/>
-        <h1>Dashboard</h1>
-        <h3>All Pool Accounts: </h3>
+        <h1>Accounts</h1>
+        <h3>All Accounts: </h3>
         <ul className='resource-list'>
           Loading...
         </ul>
@@ -74,8 +64,8 @@ function Dashboard() {
   return (
     <div>
       <NavBar/>
-      <h1>Dashboard</h1>
-      <h3>All Pool Accounts: </h3>
+      <h1>Accounts</h1>
+      <h3>All Accounts: </h3>
       <ul className='resource-list'>
         {data.map(account => (
           <li key={account.id}>
@@ -87,4 +77,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+export default Accounts

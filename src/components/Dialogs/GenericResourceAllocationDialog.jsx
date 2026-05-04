@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Select from 'react-select';
 
-import { allocateGeneric, readResources } from "../services/api";
+import { allocateGeneric, readResources } from "../../services/api";
 
 function GenericResourceAllocationDialog({ onUpdate, disabled, action }) {
   const dialogRef = useRef(null);
@@ -27,7 +27,9 @@ function GenericResourceAllocationDialog({ onUpdate, disabled, action }) {
             const status = error.response.status;
             const statusText = error.response.statusText;
             const details = error.response.data;
-            alert(`ERR ${status}: ${details}`);
+            const body = JSON.stringify(details);
+            console.log(details);
+            alert(`ERR ${status}: ${body}`);
           }
           else if (error.request) {
             alert(`Request Error ${error.code}\nDetails: ${error.request}`);

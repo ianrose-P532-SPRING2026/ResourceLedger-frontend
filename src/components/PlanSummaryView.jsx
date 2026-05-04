@@ -20,10 +20,12 @@ export default function PlanSummaryView({ plan }) {
           } 
           catch (error) {
             if (error.response) {
-              const status = error.response.status;
-              const statusText = error.response.statusText;
-              const details = error.response.data;
-              alert(`ERR ${status}: ${details}`);
+                const status = error.response.status;
+                const statusText = error.response.statusText;
+                const details = error.response.data;
+                const body = JSON.stringify(details);
+                console.log(details);
+                alert(`ERR ${status}: ${body}`);
             }
             else if (error.request) {
               alert(`Request Error ${error.code}\nDetails: ${error.request}`);

@@ -1,22 +1,24 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
-import { readResources } from '../services/api';
+import { readResources, readAssets } from '../services/api';
 import '../style.css';
 
 import NavBar from '../components/NavBar.jsx';
 
 
-import CreateConsumableDialog from '../components/CreateResourceDialog';
-import CreateAssetTypeDialog from '../components/CreateAssetTypeDialog';
-import ConsumableListing from '../components/ConsumableListing';
-import AssetTypeListing from '../components/AssetTypeListing';
-import CreateAssetDialog from '../components/CreateAssetDialog';
+import CreateConsumableDialog from '../components/Dialogs/CreateConsumableDialog.jsx';
+import CreateAssetTypeDialog from '../components/Dialogs/CreateAssetTypeDialog.jsx';
+import ConsumableListing from '../components/Listings/ConsumableListing.jsx';
+import AssetTypeListing from '../components/Listings/AssetTypeListing.jsx';
+import CreateAssetDialog from '../components/Dialogs/CreateAssetDialog.jsx';
+import AssetListing from '../components/Listings/AssetListing.jsx';
 
 function Resources() {
   const [data, setData] = useState([]);
   const [consumables, setConsumables] = useState([]);
   const [assetTypes, setAssetTypes] = useState([]);
+  const [assets, setAssets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,12 +26,13 @@ function Resources() {
       try {
         const response = await readResources();
 
-        const status = response.status;
-        const statusText = response.statusText;
-        console.log(`${status}: ${statusText}`);
+        const types = response.data;
+        setData(types);
 
-        const objects = response.data;
-        setData(objects);
+        const assetsResponse = await readAssets();
+        const assetz = assetsResponse.data;
+        setAssets(assetz);
+
         setLoading(false);
       } 
       catch (error) {
@@ -37,7 +40,9 @@ function Resources() {
           const status = error.response.status;
           const statusText = error.response.statusText;
           const details = error.response.data;
-          alert(`ERR ${status}: ${details}`);
+          const body = JSON.stringify(details);
+          console.log(details);
+          alert(`ERR ${status}: ${body}`);
         }
         else if (error.request) {
           alert(`Request Error ${error.code}\nDetails: ${error.request}`);
@@ -68,17 +73,45 @@ function Resources() {
     }, [data]);
 
 
-  function handleDelete(id) {
-
-  }
-
-  function onUpdateAssets(newData) {
+  function onCreateAssetType(newData) {
     setAssetTypes(prevData => [...prevData, newData]);
   }
 
-  function onUpdateConsum(newData) {
+  function onCreateAsset(newData) {
+    setAssets(prevData => [...prevData, newData]);
+  }
+
+  function onCreateConsumable(newData) {
     setConsumables(prevData => [...prevData, newData]);
   }
+
+  const onUpdateConsumable = (newResource) => {
+    setConsumables(prevData => 
+      prevData.map(resource => 
+        resource.id === newResource.id 
+          ? newResource
+          : resource
+      )
+    );
+  };
+
+  const onUpdateAssetType = (newResource) => {
+    setAssetTypes(prevData => 
+      prevData.map(resource => 
+        resource.id === newResource.id 
+          ? newResource
+          : resource
+      )
+    );
+  };
+
+  const onDeleteAsset = (id) => {
+    setAssets(assets.filter(item => item.id !== id));
+  };
+
+  const onDeleteResourceType = (id) => {
+    setData(data.filter(item => item.id !== id));
+  };
   
 
 
@@ -102,11 +135,11 @@ function Resources() {
       <div className='resource-page-split'>
         <div>
           <h3>Consumable Types:</h3>
-          <CreateConsumableDialog disabled={false} onUpdate={onUpdateConsum}/>
+          <CreateConsumableDialog disabled={false} onUpdate={onCreateConsumable}/>
           <ul className='resource-list'>
             {consumables.map(consumable => (
               <li key={consumable.id}>
-                <ConsumableListing consumable={consumable}/>
+                <ConsumableListing consumable={consumable} onDelete={onDeleteResourceType} onUpdate={onUpdateConsumable}/>
               </li>
             ))}
           </ul>
@@ -114,12 +147,24 @@ function Resources() {
         
         <div>
           <h3>Asset Types:</h3>
-          <CreateAssetTypeDialog disabled={false} onUpdate={onUpdateAssets}/>
-          <CreateAssetDialog disabled={false} onUpdate={onUpdateAssets} allTypes={assetTypes}/>
+          <CreateAssetTypeDialog disabled={false} onUpdate={onCreateAssetType}/>
+          
           <ul className='resource-list'>
             {assetTypes.map(assetType => (
               <li key={assetType.id}>
-                <AssetTypeListing assetType={assetType}/>
+                <AssetTypeListing assetType={assetType} onDelete={onDeleteResourceType} onUpdate={onUpdateAssetType}/>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h3>Assets: </h3>
+          <CreateAssetDialog disabled={false} onUpdate={onCreateAsset} allTypes={assetTypes}/>
+          <ul className='resource-list'>
+            {assets.map(asset => (
+              <li key={asset.id}>
+                <AssetListing asset={asset} onDelete={onDeleteAsset}/>
               </li>
             ))}
           </ul>

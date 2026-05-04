@@ -5,9 +5,11 @@ import { readLogs } from '../services/api';
 import '../style.css';
 
 import NavBar from '../components/NavBar.jsx';
+import TransactionListing from '../components/Listings/TransactionListing.jsx';
 
 function TransactionLogs() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,13 +18,16 @@ function TransactionLogs() {
 
         const objects = response.data;
         setData(objects);
+        setLoading(false);
       } 
       catch (error) {
         if (error.response) {
           const status = error.response.status;
           const statusText = error.response.statusText;
           const details = error.response.data;
-          alert(`ERR ${status}: ${details}`);
+          const body = JSON.stringify(details);
+          console.log(details);
+          alert(`ERR ${status}: ${body}`);
         }
         else if (error.request) {
           alert(`Request Error ${error.code}\nDetails: ${error.request}`);
@@ -39,6 +44,16 @@ function TransactionLogs() {
     
   console.log(data);
 
+  if (loading) return (
+    <div>
+      <NavBar/>
+      <h1>Transaction Logs</h1>
+      <ul className='resource-list'>
+        Loading...
+      </ul>          
+    </div>
+  )
+
   return (
     <div>
       <NavBar/>
@@ -46,22 +61,7 @@ function TransactionLogs() {
       <ul className='resource-list'>
         {data.map(transaction => (
           <li key={transaction.id} className='log'>
-            <p>Desc: {transaction.description}</p>
-            <ul>
-              {transaction.entries.map(entry => (
-                <li key={transaction.id+"-"+entry.id}>
-                  {entry.amount > 0 ?
-                   <>
-                    <p>DEPOSIT: {entry.amount} TO {entry.account.name}</p>
-                   </>
-                   : 
-                   <>
-                    <p>WITHDRAWAL: {entry.amount} FROM {entry.account.name}</p>
-                   </>
-                   }
-                </li>
-              ))}
-            </ul>
+            <TransactionListing transaction={transaction}/>
           </li>
         ))}
       </ul>          

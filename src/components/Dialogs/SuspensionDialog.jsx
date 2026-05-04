@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { suspendAction } from "../services/api";
+import { suspendAction } from "../../services/api";
 
 function SuspensionDialog({ onUpdate, disabled, action }) {
   const dialogRef = useRef(null);
@@ -39,12 +39,16 @@ function SuspensionDialog({ onUpdate, disabled, action }) {
         const status = error.response.status;
         const statusText = error.response.statusText;
         const details = error.response.data;
-        alert(`ERR ${status}: ${details}`);
+        const body = JSON.stringify(details);
+        console.log(details);
+        alert(`ERR ${status}: ${body}`);
       }
       else if (error.request) {
-        alert(`No response.`);
+        alert(`Request Error ${error.code}\nDetails: ${error.request}`);
+        console.log("Request Details:", error.request);
       } else {
-        alert(`Unknown error: ${error.message}`)
+        console.log(error.message);
+        alert(`Error: ${error.message}`)
       }
     }
 

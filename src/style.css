@@ -137,3 +137,18 @@ body, #root {
     padding: 8px;
     display: block;
 }
+
+.account-listing {
+    border: 1px solid black;
+    background-color: rgb(240, 240, 240);
+    padding: 8px;
+    margin: 8px;
+    display: block;
+}
+
+.entry-listing {
+    border: 1px solid black;
+    background-color: rgb(240, 240, 240);
+    padding: 8px;
+    display: block;
+}

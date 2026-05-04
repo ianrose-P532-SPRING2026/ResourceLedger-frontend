@@ -9,7 +9,7 @@ function ProposalNode({ data }) {
   return (
     <div className="protocol-node">
       <Handle type="target" position={Position.Top} />
-      <div className='nodrag nopan' style={{ pointerEvents: 'all' }}>
+      <div style={{ pointerEvents: 'all' }}>
         <strong>Proposed: {data.action.name}</strong>
         <p>Status: {data.action.status}</p>
         <br/>

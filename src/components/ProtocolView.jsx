@@ -6,8 +6,7 @@ import '@xyflow/react/dist/style.css';
 
 import '../style.css';
 
-import { readAccounts } from '../services/api';
-import AccountListing from './AccountListing';
+import AccountListing from './Listings/AccountListing';
 import ProtocolNode from './ProtocolNode';
 import ProtocolStepNode from './ProtocolStepNode';
 import { createProtocol } from '../services/api';

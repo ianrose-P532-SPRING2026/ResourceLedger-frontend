@@ -6,8 +6,7 @@ import '@xyflow/react/dist/style.css';
 
 import '../style.css';
 
-import { readAccounts } from '../services/api';
-import AccountListing from './AccountListing';
+import AccountListing from './Listings/AccountListing';
 import ProtocolNode from './ProtocolNode';
 import ProtocolStepNode from './ProtocolStepNode';
 import { createProtocol } from '../services/api';
@@ -21,7 +20,7 @@ const getLayoutedElements = (nodes, edges, direction = "TB") => {
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
   const isHorizontal = direction === "LR";
-  dagreGraph.setGraph({ rankdir: direction, nodesep: 100, ranksep: 150});
+  dagreGraph.setGraph({ rankdir: direction, nodesep: 250, ranksep: 150});
 
   nodes.forEach((node) => {
     dagreGraph.setNode(node.id, {
@@ -118,10 +117,10 @@ function PlanView({ plan, carryUp }) {
           nodes={nodes} 
           edges={edges} 
           fitView 
-          nodesDraggable={false}
+          nodesDraggable={true}
           nodesConnectable={false}
-          nodesFocusable={false}
-          elementsSelectable={false}
+          nodesFocusable={true}
+          elementsSelectable={true}
           nodeTypes={nodeTypes}
         > 
           <Panel position="top-left">

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
 import { readTest, deleteTest } from '../services/api';
-import CreateTestDialog from '../components/CreateTestDialog';
+import CreateTestDialog from '../components/Dialogs/CreateTestDialog';
 
 function TestPage() {
   const [data, setData] = useState([]);

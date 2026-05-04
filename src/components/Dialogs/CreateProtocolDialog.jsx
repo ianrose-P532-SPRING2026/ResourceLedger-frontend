@@ -4,13 +4,12 @@ import { addEdge, useNodesState, useEdgesState, ReactFlow, Background, Panel } f
 import dagre from '@dagrejs/dagre';
 import '@xyflow/react/dist/style.css';
 
-import '../style.css';
+import '../../style.css';
 
-import { readAccounts } from '../services/api';
-import AccountListing from './AccountListing';
-import ProtocolNode from './ProtocolNode';
-import ProtocolStepNode from './ProtocolStepNode';
-import { createProtocol } from '../services/api';
+import AccountListing from '../Listings/AccountListing';
+import ProtocolNode from '../ProtocolNode';
+import ProtocolStepNode from '../ProtocolStepNode';
+import { createProtocol } from '../../services/api';
 
 const nodeWidth = 180;
 const nodeHeight = 40;
@@ -154,6 +153,7 @@ const onSubmit = async (e) => {
 
   async function submitProtocol(name, desc, steps) {
     const response = await createProtocol(name, desc, steps);
+    onUpdate(response.data);
     console.log(response);
   }
 
@@ -189,6 +189,7 @@ const onSubmit = async (e) => {
                   <label>
                     Name:
                     <input
+                      value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
                     />
@@ -198,6 +199,7 @@ const onSubmit = async (e) => {
                   <label>Description: </label>
                   <br/>
                   <textarea
+                    value={desc}
                     onChange={(e) => setDesc(e.target.value)}
                   />
                   
