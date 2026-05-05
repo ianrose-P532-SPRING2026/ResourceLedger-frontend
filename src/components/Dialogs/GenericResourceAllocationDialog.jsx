@@ -3,7 +3,7 @@ import Select from 'react-select';
 
 import { allocateGeneric, readResources } from "../../services/api";
 
-function GenericResourceAllocationDialog({ onUpdate, disabled, action }) {
+function GenericResourceAllocationDialog({ plan, onUpdate, disabled, action }) {
   const dialogRef = useRef(null);
   const openModal = () => dialogRef.current.showModal();
   const closeModal = () => dialogRef.current.close();
@@ -61,7 +61,8 @@ function GenericResourceAllocationDialog({ onUpdate, disabled, action }) {
     console.log('Submitted type:', selectedType);
     
     try {
-      const result = await allocateGeneric(action.id, selectedType.id, amount);
+      const result = await allocateGeneric(plan.id, action.id, selectedType.id, amount);
+      onUpdate(result)
     }
     
     catch (error) {

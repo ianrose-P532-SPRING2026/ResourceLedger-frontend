@@ -8,6 +8,8 @@ function CreateAssetTypeDialog({ onUpdate, disabled }) {
   const closeModal = () => dialogRef.current.close();
 
   const [name, setName] = useState('');
+    const [unitC, setUnitC] = useState('');
+
 
 
   const onOpen = () => {
@@ -26,7 +28,7 @@ function CreateAssetTypeDialog({ onUpdate, disabled }) {
     console.log('Submitted name:', name);
     
     try {
-      const result = await createResource(name, "ASSET", null, 0);
+      const result = await createResource(name, "ASSET", null, 0, unitC);
       onUpdate(result.data);
     }
     
@@ -75,6 +77,18 @@ function CreateAssetTypeDialog({ onUpdate, disabled }) {
               onChange={(e) => setName(e.target.value)} 
             />
           </label>
+
+          <label>unitcost 
+            <input 
+              type="number"
+              step="any" 
+              value={unitC}
+              min="0"
+              onChange={(e) => setUnitC(e.target.value)}
+              placeholder='0.00'
+            />
+          </label>
+
           <button type="submit">Submit</button>
           <button type="button" onClick={onCancel}>Cancel</button>
         </form>

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { suspendAction } from "../../services/api";
 
-function SuspensionDialog({ onUpdate, disabled, action }) {
+function SuspensionDialog({ onUpdate, disabled, action, plan }) {
   const dialogRef = useRef(null);
   const openModal = () => dialogRef.current.showModal();
   const closeModal = () => dialogRef.current.close();
@@ -69,7 +69,7 @@ function SuspensionDialog({ onUpdate, disabled, action }) {
   return (
     <>
       <button onClick={onOpen}>Suspend</button>
-      <br/>
+
       <dialog ref={dialogRef} style={{ padding: '30px' }}>
         <form onSubmit={onSubmit}>
           <h3>Suspension</h3>

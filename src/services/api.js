@@ -2,16 +2,16 @@ import axios from "axios";
 
 
 export const host = axios.create({
-  //baseURL: "http://localhost:8080/api",
-  baseURL: "https://ianroseresourceledgerweek1.onrender.com/api",
+  baseURL: "http://localhost:8080/api",
+  //baseURL: "https://ianroseresourceledgerweek1.onrender.com/api",
   timeout: 30000,
 });
 
 
 
 
-export async function createResource(name, kind, unit, amount) {
-  const request = {name: name, kind: kind, unit: unit, startingBalance: amount};
+export async function createResource(name, kind, unit, amount, unic) {
+  const request = {name: name, kind: kind, unit: unit, startingBalance: amount, unitCost: unic};
   const response = await host.post(`/resource-types`, request);
   return response;
 }
@@ -107,20 +107,20 @@ export async function getPlanSummary(id) {
 
 
 
-export async function setActionState(id, state) {
-  const request = {suspendReason: "", suspensionEnd: null};
+export async function setActionState(id, state, planId) {
+  const request = {suspendReason: "", suspensionEnd: null, planId: planId};
   const response = await host.post(`/actions/${id}/${state}`, request);
   return response;
 }
 
-export async function suspendAction(id, suspendReason, suspensionEnd) {
-  const request = {suspendReason: suspendReason, suspensionEnd: suspensionEnd};
+export async function suspendAction(id, suspendReason, suspensionEnd, planId) {
+  const request = {suspendReason: suspendReason, suspensionEnd: suspensionEnd, planId: planId};
   const response = await host.post(`/actions/${id}/suspend`, request);
   return response;
 }
 
-export async function allocateGeneric(actionId, resourceId, amount) {
-  const request = {actionId: actionId, resourceId: resourceId, type: "GENERAL", amount: amount};
+export async function allocateGeneric(planId, actionId, resourceId, amount) {
+  const request = {planId: planId, actionId: actionId, resourceId: resourceId, type: "GENERAL", amount: amount};
   const response = await host.post(`/actions/allocation`, request);
   return response;
 }

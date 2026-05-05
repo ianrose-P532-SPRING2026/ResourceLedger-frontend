@@ -51,6 +51,15 @@ export default function PlanSummaryView({ plan }) {
             <hr/>
             <p>Summary:</p>
             <button onClick={(e) => setLoadState("LOADING")}>Request summary</button>
+                <label>this frontend doesnt work yet sorry </label>
+                <select>
+                    <option value="PROPOSED">PROPOSED</option>
+                    <option value="COMPLETE">COMPLETE</option>
+                    <option value="PENDING_APPROVAL">PENDING_APPROVAL</option>
+                    <option value="ABANDONED">ABANDONED</option>
+                    <option value="SUSPENDED">SUSPENDED</option>
+                    
+                </select>
         </div>
     );
 
@@ -66,8 +75,12 @@ export default function PlanSummaryView({ plan }) {
     console.log("SUMMARY: ", summary);
     return (
         <div className="plan-details">
-            <strong>Name: {plan.name}</strong>
+            <h3>Name: {plan.name}</h3>
+            <p>Total cost: {summary.totalCost}</p>
+            <p>risk sorcre: {summary.riskScore}</p>
+            <p>ratio: {summary.ratio}</p>
             <hr/>
+            <button onClick={(e) => setLoadState("LOADING")}>update summary</button>
             <p>Summary:</p>
             <div className="plan-summary">
                 <ul>

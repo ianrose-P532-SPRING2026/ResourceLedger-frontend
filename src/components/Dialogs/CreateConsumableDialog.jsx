@@ -9,6 +9,7 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
 
   const [name, setName] = useState('');
   const [unit, setUnit] = useState('');
+  const [unitC, setUnitC] = useState('');
   const [amount, setAmount] = useState("0");
 
 
@@ -29,7 +30,7 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
     e.preventDefault();
     
     try {
-      const result = await createResource(name, "CONSUMABLE", unit, amount);
+      const result = await createResource(name, "CONSUMABLE", unit, amount, unitC);
       const status = result.status;
       const statusText = result.statusText;
       console.log(`${status}: ${statusText}`)
@@ -101,6 +102,18 @@ function CreateConsumableDialog({ onUpdate, disabled }) {
               value={amount}
               min="0"
               onChange={(e) => setAmount(e.target.value)}
+              placeholder='0.00'
+            />
+          </label>
+
+
+          <label>unitcost 
+            <input 
+              type="number"
+              step="any" 
+              value={unitC}
+              min="0"
+              onChange={(e) => setUnitC(e.target.value)}
               placeholder='0.00'
             />
           </label>

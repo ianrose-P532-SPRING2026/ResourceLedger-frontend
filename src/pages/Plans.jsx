@@ -68,7 +68,11 @@ function Plans() {
   }, []);
 
   function onUpdate(newData) {
-    setData(prevData => [...prevData, newData]);
+    console.log(plan.id)
+    //setData(prevData => [...prevData, newData]);
+    console.log(newData.data);
+    setPlan(newData.data.plan);
+    setAction(newData.data.action);
   }
 
   function carryUp(e) {
@@ -88,7 +92,6 @@ function Plans() {
           Loading...
         </ul>
 
-        <CreateProtocolDialog disabled={true} onUpdate={onUpdate}></CreateProtocolDialog>
       </div>
     );
   } 
@@ -124,7 +127,7 @@ function Plans() {
         
         {action ?
         <div style={{width: "15%"}}>
-          <ActionDetails action={action}/>
+          <ActionDetails action={action} onUpdate={onUpdate} plan={plan}/>
         </div>
         :
         <></>
